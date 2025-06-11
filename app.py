@@ -8,10 +8,6 @@ from nltk.tokenize import word_tokenize
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 import joblib
 from livereload import Server
-import matplotlib.pyplot as plt
-import seaborn as sns
-import base64
-from io import BytesIO
 from collections import Counter
 import re
 import nltk
@@ -41,20 +37,10 @@ nltk.download('punkt')
 nltk.download('punkt_tab')
 nltk.download('stopwords')
 
-# @app.before_request
-# def download_nltk_resources():
-#     try:
-#         nltk.data.find('tokenizers/punkt')
-#     except LookupError:
-#         nltk.download('punkt')
-    
-#     try:
-#         nltk.data.find('corpora/stopwords')
-#     except LookupError:
-#         nltk.download('stopwords')
-
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 
 def processing_data(df):
     # Cek apabila kolom full_text tidak ada
@@ -141,31 +127,6 @@ def processing_data(df):
     
     return df
 
-    wordcloud = WordCloud(width=800, height=400, 
-                         background_color='white',
-                         max_words=100, 
-                         colormap='viridis').generate(text)
-    
-    plt.figure(figsize=(10, 5))
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.axis('off')
-    plt.tight_layout()
-
-    filename = f'wordcloud_{sentiment}.png'
-    
-    # Simpan Gambar
-    if os.path.exists(filename):
-        os.remove(filename)
-
-    plt.savefig(filename, dpi=300, bbox_inches='tight')
-
-    buf = BytesIO()
-    plt.tight_layout()
-    plt.savefig(buf, format='png')
-    buf.seek(0)
-    plt.close()
-
-    return base64.b64encode(buf.getvalue()).decode('utf-8')
 
 @app.route('/')
 def index():
@@ -208,30 +169,23 @@ def download_csv():
     except Exception as e:
         flash(f'Error generating Excel file: {str(e)}')
         return redirect(url_for('processing')) 
+    
+@app.route('/reset_data', methods=['GET','POST'])
+def reset_data():
+    global preview_data, hasil, data_review
+    # Hapus file upload jika ada
+    if 'uploaded_file' in session:
+        session.pop('uploaded_file', None)
+    if os.path.exists('data.csv'):
+        os.remove('data.csv')
+    if os.path.exists('hasilweb.csv'):
+        os.remove('hasilweb.csv')
+    preview_data = None
+    hasil = None
+    data_review = None
+    flash('Data telah direset')
 
-@app.route('/download_bar_chart', methods=['GET', 'POST'])
-def download_bar_chart():
-    return send_from_directory(directory='.', path='bar_chart.png', as_attachment=True, download_name='bar_chart.png')
-
-@app.route('/download_pie_chart', methods=['GET', 'POST'])
-def download_pie_chart():
-    return send_from_directory(directory='.', path='pie_chart.png', as_attachment=True, download_name='pie_chart.png')
-
-@app.route('/download_wordcloud_all', methods=['GET', 'POST'])
-def download_wordcloud_all():
-    return send_from_directory(directory='.', path='wordcloud_all.png', as_attachment=True, download_name='wordcloud_all.png')
-
-@app.route('/download_wordcloud_netral', methods=['GET', 'POST'])
-def download_wordcloud_netral():
-    return send_from_directory(directory='.', path='wordcloud_netral.png', as_attachment=True, download_name='wordcloud_netral.png')
-
-@app.route('/download_wordcloud_positif', methods=['GET', 'POST'])
-def download_wordcloud_positif():
-    return send_from_directory(directory='.', path='wordcloud_positif.png', as_attachment=True, download_name='wordcloud_positif.png')
-
-@app.route('/download_wordcloud_negatif', methods=['GET', 'POST'])
-def download_wordcloud_negatif():
-    return send_from_directory(directory='.', path='wordcloud_negatif.png', as_attachment=True, download_name='wordcloud_negatif.png')
+    return redirect(url_for('kelola_data'))
 
 @app.route('/kelola_data', methods=['GET', 'POST'])
 def kelola_data():
@@ -241,32 +195,6 @@ def kelola_data():
     current_page = request.args.get('page', 1, type=int)
     total_pages = 1
 
-    # Reset File
-    # Hasil Proses
-    if(os.path.exists("hasilweb.csv")):
-        os.remove("hasilweb.csv")
-    if(os.path.exists("data.csv")):
-        os.remove("data.csv")
-    
-    # Chart
-    if(os.path.exists("bar_chart.png")):
-        os.remove("bar_chart.png")
-    if(os.path.exists("pie_chart.png")):
-        os.remove("pie_chart.png")
-    if(os.path.exists("wordcloud_all.png")):
-        os.remove("wordcloud_all.png")
-    if(os.path.exists("wordcloud_netral.png")):
-        os.remove("wordcloud_netral.png")
-    if(os.path.exists("wordcloud_positif.png")):
-        os.remove("wordcloud_positif.png")
-    if(os.path.exists("wordcloud_negatif.png")):
-        os.remove("wordcloud_negatif.png")
-
-    # Download Hasil
-    if(os.path.exists("hasil.xlsx")):
-        os.remove("hasil.xlsx")
-    if(os.path.exists("hasil.csv")):
-        os.remove("hasil.csv")
     
     # Check if a file was previously uploaded
     if 'uploaded_file' in session:
@@ -460,19 +388,7 @@ def uji_coba():
 def info_model():
     return render_template('info_model.html')
 
-@app.route('/reset', methods=['POST'])
-def reset_data():
-    global preview_data, hasil, data_review
-    # Hapus file upload jika ada
-    session.pop('uploaded_file', None)
-    os.remove('data.csv')
-    os.remove('hasilweb.csv')
-    preview_data = None
-    hasil = None
-    data_review = None
-    flash('Data telah direset')
 
-    return redirect(url_for('kelola_data'))
 
 if __name__ == '__main__':
 
