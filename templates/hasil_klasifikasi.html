@@ -1,0 +1,120 @@
+<!-- templates/hasil_klasifikasi.html -->
+{% extends "base.html" %} {% block content %}
+
+<!-- Spinner Loading -->
+<div id="loading-overlay" style="display: none">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Sedang memproses data...</p>
+  </div>
+</div>
+
+<div class="sidebar">
+  <h1 class="sidebar-title">
+    ANALISIS<br />SENTIMEN<br />INSTITUSI<br />POLRI
+  </h1>
+  <div class="sidebar-menu">
+    <a href="{{ url_for('kelola_data') }}" class="menu-item">Kelola Data</a>
+    <a href="{{ url_for('processing') }}" class="menu-item">Processing</a>
+    <a href="{{ url_for('hasil_klasifikasi') }}" class="menu-item active"
+      >Hasil Klasifikasi</a
+    >
+    <a href="{{ url_for('uji_coba') }}" class="menu-item">Uji Coba</a>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="content-header">
+    <h2>Hasil Klasifikasi</h2>
+  </div>
+
+  <div class="content-text">
+    <p>
+      Hasil analisis sentimen terhadap data / file yang telah diupload.
+      Klasifikasi menggunakan model Naive Bayes + AdaBoost yang sudah dilatih
+      dengan pembagian data latih dan uji 70:30 dan akurasi sebesar 95%.
+    </p>
+  </div>
+
+  <div class="results-container">
+    <h3 style="text-align: center">Hasil Klasifikasi</h3>
+    <div class="model-result">
+      {% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="flashes">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %} {% endwith %}
+    </div>
+  </div>
+
+  <div class="classification-results">
+    <div class="chart-container">
+      <div class="chart">
+        <h3 style="text-align: center">Distribusi Sentimen</h3>
+        <img src="data:image/png;base64,{{ bar_chart }}" alt="Bar Chart" />
+        <a class="process-btn" href="{{ url_for('download_bar_chart') }}"
+          >Download Bar Chart</a
+        >
+      </div>
+      <div class="chart">
+        <h3 style="text-align: center">Proporsi Sentimen</h3>
+        <img src="data:image/png;base64,{{ pie_chart }}" alt="Pie Chart" />
+        <a class="process-btn" href="{{ url_for('download_pie_chart') }}"
+          >Download Pie Chart</a
+        >
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="chart">
+        <h3>Word Cloud Dari Keseluruhan Data / Isi File CSV</h3>
+        <img src="data:image/png;base64,{{ wordcloud }}" alt="Word Cloud" />
+        <a class="process-btn" href="{{ url_for('download_wordcloud_all') }}"
+          >Download WordCloud</a
+        >
+      </div>
+      <div class="chart">
+        <h3>Word Cloud Untuk Sentimen Netral</h3>
+        <img
+          src="data:image/png;base64,{{ wordcloud_neutral }}"
+          alt="Word Cloud"
+        />
+        <a
+          class="process-btn"
+          href="{{ url_for('download_wordcloud_netral') }}"
+        >
+          Download WordCloud Netral
+        </a>
+      </div>
+      <div class="chart">
+        <h3>Word Cloud Untuk Sentimen Positif</h3>
+        <img
+          src="data:image/png;base64,{{ wordcloud_positive }}"
+          alt="Word Cloud"
+        />
+        <a
+          class="process-btn"
+          href="{{ url_for('download_wordcloud_positif') }}"
+        >
+          Download WordCloud Positif
+        </a>
+      </div>
+      <div class="chart">
+        <h3>Word Cloud Untuk Sentimen Negatif</h3>
+        <img
+          src="data:image/png;base64,{{ wordcloud_negative }}"
+          alt="Word Cloud"
+        />
+        <a
+          class="process-btn"
+          href="{{ url_for('download_wordcloud_negatif') }}"
+        >
+          Download WordCloud Negatif
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

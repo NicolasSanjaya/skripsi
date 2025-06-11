@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block content %}
+<div class="sidebar">
+  <h1 class="sidebar-title">
+    ANALISIS<br />SENTIMEN<br />INSTITUSI<br />POLRI
+  </h1>
+  <div class="sidebar-menu">
+    <a href="{{ url_for('kelola_data') }}" class="menu-item">Kelola Data</a>
+    <a href="{{ url_for('processing') }}" class="menu-item">Processing</a>
+    <a href="{{ url_for('uji_coba') }}" class="menu-item">Uji Coba</a>
+    <a href="{{ url_for('info_model') }}" class="menu-item active"
+      >Info Model</a
+    >
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="content-header">
+    <h2>Info Model</h2>
+  </div>
+
+  <div class="content-text">
+    <p>
+      Halaman ini menampilkan informasi mengenai model yang digunakan dalam
+      analisis sentimen. Model ini menggunakan algoritma Naive Bayes + AdaBoost
+      dari 2.094 data dengan sentimen netral 196 data, sentimen positif 707
+      data, dan sentimen negatif 1.191 data. Pembagian 80:20 untuk
+      mengklasifikasikan data sentimen.
+    </p>
+  </div>
+
+  <div class="upload-section">
+    <div class="metrics-section">
+      <div class="metric-card">
+        <div class="metric-title">Akurasi</div>
+        <div class="metric-value">86.3%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Presisi Negatif</div>
+        <div class="metric-value">84%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Presisi Netral</div>
+        <div class="metric-value">75%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Presisi Positif</div>
+        <div class="metric-value">94%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Recall Negatif</div>
+        <div class="metric-value">98%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Recall Netral</div>
+        <div class="metric-value">46%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Recall Positif</div>
+        <div class="metric-value">77%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">F1-Score Negatif</div>
+        <div class="metric-value">91%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">F1-Score Netral</div>
+        <div class="metric-value">57%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">F1-Score Positif</div>
+        <div class="metric-value">85%</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">Learning Rate</div>
+        <div class="metric-value learning-rate">0.5</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-title">N Estimator</div>
+        <div class="metric-value n-estimator">50</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

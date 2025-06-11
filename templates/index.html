@@ -1,0 +1,17 @@
+<!-- templates/index.html -->
+{% extends "base.html" %} {% block content %}
+<div class="title-container">
+  <h1>ANALISIS SENTIMEN INSTITUSI POLRI</h1>
+</div>
+
+<div class="content-container">
+  <p class="lorem-text">
+    Selamat datang diweb aplikasi Analisis Sentimen Institusi Polri. Aplikasi
+    ini berfungsi untuk melakukan analisis sentimen pada data teks.
+  </p>
+</div>
+
+<div class="button-container">
+  <a href="{{ url_for('kelola_data') }}" class="lanjutkan-btn">Lanjutkan</a>
+</div>
+{% endblock %}
