@@ -77,7 +77,7 @@ def processing_data(df):
         # Menghapus spasi berlebih
         text = re.sub(r'\s+', ' ', text).strip()
         # Mengganti &amp dengan kata dan
-        text = text.replace('amp', 'dan')
+        text = text.replace('&amp', 'dan')
         return text
 
     df['full_text'] = df['full_text'].apply(clean_text)
@@ -332,6 +332,10 @@ def process_data():
     if(os.path.exists("hasilweb.csv")):
         os.remove("hasilweb.csv")
 
+    if  'uploaded_file' not in session:
+        flash('Tidak ada file yang diunggah')
+        return redirect(url_for('kelola_data'))
+    
     data = pd.read_csv(session['uploaded_file'])
 
     # Preprocess the data

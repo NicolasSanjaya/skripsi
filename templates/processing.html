@@ -34,15 +34,11 @@
       diupload. Data yang telah diupload akan diproses untuk mendapatkan hasil
       analisis sentimen. Proses ini meliputi beberapa tahap, seperti
       <strong>case folding</strong>, <strong>cleaning data</strong>,
-      <strong>tokenisasi</strong>, <strong>stopword removal</strong>,
-      <strong>stemming</strong> kemudian model akan melakukan klasifikasi
-      sentiment dan akan menghasilkan kolom full_text sebagai text asli yang
-      telah diproses hanya sebatas case folding dan cleaning kemudian kolom
-      stemmed_text yang merupakan hasil dari proses tokenisasi, stopword
-      removal, dan stemming. Setelah itu, data akan disimpan ke dalam file yang
-      sudah otomatis terdownload dan tersimpan untuk digunakan dalam analisis
-      sentimen lebih lanjut. Setelah proses ini selesai, Anda dapat melanjutkan
-      ke halaman Hasil Klasifikasi untuk melihat hasil analisis sentimen.
+      <strong>normalisasi</strong>, <strong>tokenisasi</strong>,
+      <strong>stopword removal</strong>, <strong>stemming</strong> kemudian
+      model akan melakukan klasifikasi sentimen. Setelah proses ini selesai,
+      Anda dapat melanjutkan ke halaman Hasil Klasifikasi untuk melihat hasil
+      analisis sentimen.
     </p>
   </div>
 
@@ -53,7 +49,10 @@
         *harus ada kolom yang bernama full_text pada file .csv
       </p>
       <p>Tahap yang akan dilakukan adalah</p>
-      <p>Case Folding, Cleaning Data, Tokenisasi, Stopword Removal, Stemming</p>
+      <p>
+        Case Folding, Cleaning Data, Normalisasi, Tokenisasi, Stopword Removal,
+        Stemming
+      </p>
     </div>
     {% with messages = get_flashed_messages() %} {% if messages %}
     <div class="flashes">

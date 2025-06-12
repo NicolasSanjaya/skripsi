@@ -768,3 +768,7 @@ body {
   transition: background-color 0.3s;
   color: white;
 }
+
+.btn-danger:hover {
+  background-color: #d32f2f;
+}
