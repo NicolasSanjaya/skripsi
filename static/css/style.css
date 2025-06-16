@@ -772,3 +772,11 @@ body {
 .btn-danger:hover {
   background-color: #d32f2f;
 }
+
+.confusion-matrix {
+  margin-top: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 4px;
+  margin: auto;
+}
